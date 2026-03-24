@@ -1,5 +1,5 @@
 {
-  "gameId": "default-game-v1",
+  "gameId": "default-game-v2",
   "reels": 5,
   "rows": 3,
   "betPerLine": 1.0,
@@ -18,23 +18,23 @@
   "reelStrips": [
     {
       "reelIndex": 0,
-      "symbols": ["A","A","A","B","B","C","C","C","D","D","D","D","E","E","E","E","WILD","A","B","C","D","E","SCATTER","A","B"]
+      "symbols": ["WILD","E","D","C","B","A","E","D","C","B","E","D","A","SCATTER","E","D","C","B","WILD","E","D","E","A","D","B","E","D","C","E","D","E","C"]
     },
     {
       "reelIndex": 1,
-      "symbols": ["A","A","B","B","B","C","C","D","D","D","E","E","E","WILD","A","B","C","C","D","E","SCATTER","A","B","C","D"]
+      "symbols": ["WILD","E","D","C","B","A","E","D","C","B","E","D","A","C","E","D","B","C","WILD","E","D","C","A","D","B","E","D","C","E","D","SCATTER","E"]
     },
     {
       "reelIndex": 2,
-      "symbols": ["A","B","B","C","C","C","D","D","E","E","E","WILD","A","A","B","C","D","D","E","SCATTER","A","B","C","D","E"]
+      "symbols": ["WILD","E","D","C","B","A","E","D","C","B","E","SCATTER","A","C","E","D","B","C","WILD","E","D","C","A","D","B","E","C","D","E","D","SCATTER","E"]
     },
     {
       "reelIndex": 3,
-      "symbols": ["A","A","B","C","C","D","D","D","E","E","WILD","A","B","B","C","D","E","E","SCATTER","A","B","C","D","E","A"]
+      "symbols": ["WILD","E","D","C","B","A","D","E","C","B","D","E","A","C","E","D","B","C","WILD","E","D","C","B","D","A","C","E","D","SCATTER","E","D","E"]
     },
     {
       "reelIndex": 4,
-      "symbols": ["A","B","B","B","C","C","D","D","D","D","E","E","WILD","A","A","B","C","D","E","E","SCATTER","A","B","C","D"]
+      "symbols": ["E","WILD","D","E","C","B","A","D","E","C","SCATTER","B","D","A","E","D","B","WILD","E","D","C","E","A","D","B","C","E","D","E","D","C","E"]
     }
   ],
   "paylines": [
@@ -61,13 +61,18 @@
   ],
   "paytable": {
     "payouts": {
-      "WILD":    { "3": 10.0, "4": 50.0,  "5": 500.0 },
-      "A":       { "3": 5.0,  "4": 25.0,  "5": 100.0 },
-      "B":       { "3": 4.0,  "4": 20.0,  "5": 80.0  },
-      "C":       { "3": 3.0,  "4": 15.0,  "5": 60.0  },
-      "D":       { "3": 2.0,  "4": 10.0,  "5": 40.0  },
-      "E":       { "3": 1.0,  "4": 5.0,   "5": 20.0  },
-      "SCATTER": { "3": 2.0,  "4": 10.0,  "5": 50.0  }
+      "WILD":    { "3": 15.0, "4": 75.0,  "5": 500.0 },
+      "A":       { "3": 8.0,  "4": 40.0,  "5": 150.0 },
+      "B":       { "3": 6.0,  "4": 30.0,  "5": 100.0 },
+      "C":       { "3": 4.0,  "4": 20.0,  "5": 75.0  },
+      "D":       { "3": 3.0,  "4": 12.0,  "5": 50.0  },
+      "E":       { "3": 2.0,  "4": 8.0,   "5": 25.0  },
+      "SCATTER": { "3": 5.0,  "4": 20.0,  "5": 100.0 }
     }
+  },
+  "bonusRoundConfig": {
+    "freeSpinCount": 13,
+    "winMultiplier": 2.0,
+    "maxWinMultiplier": 5000.0
   }
 }

@@ -1,0 +1,29 @@
+{
+  "GameId": "default-game-v2",
+  "TotalSpins": 1000000,
+  "TotalWagered": 20000000,
+  "TotalPaid": 19231153,
+  "BaseGameRtp": 0.74489,
+  "BonusRtp": 0.21667,
+  "SimulatedRtp": 0.96156,
+  "TheoreticalBaseRtp": 0.74644,
+  "TheoreticalBonusRtp": 0.21707,
+  "TheoreticalRtp": 0.9635,
+  "RtpDelta": 0.00194,
+  "HitFrequency": 0.791,
+  "AverageWin": 24.311,
+  "MaxWin": 1785,
+  "VolatilityIndex": 2.53,
+  "BonusTriggerFrequency": 0.01124,
+  "DurationMs": 2175,
+  "ConvergenceStatus": "PASS",
+  "WinDistribution": {
+    "0x": 208960,
+    "0.01x-0.99x": 554601,
+    "1x-4.99x": 206804,
+    "5x-19.99x": 24704,
+    "20x-99.99x": 4931,
+    "100x-499.99x": 0,
+    "500x\u002B": 0
+  }
+}

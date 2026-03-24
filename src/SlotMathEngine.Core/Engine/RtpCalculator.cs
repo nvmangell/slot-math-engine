@@ -6,34 +6,77 @@ namespace SlotMathEngine.Core.Engine;
 /// Computes theoretical RTP analytically by enumerating all possible reel stop combinations
 /// and summing probability-weighted payouts across all paylines.
 ///
+/// Base game RTP = Σ P(combo) × Payout(combo) / betPerSpin
+///
+/// Bonus contribution = P(trigger) × FreeSpinCount × baseRtp × WinMultiplier
+/// Total RTP = baseRtp + bonusContribution
+///
 /// For large reel strips this is computationally expensive — use for validation, not hot path.
-/// RTP = sum over all combos of [ P(combo) * Payout(combo) ] / (betPerLine * paylineCount)
 /// </summary>
 public class RtpCalculator
 {
     private readonly SimulationConfig _config;
+    private (double baseRtp, double bonusTriggerProbability)? _cachedResult;
 
     public RtpCalculator(SimulationConfig config)
     {
         _config = config;
     }
 
+    /// <summary>
+    /// Calculates total theoretical RTP including bonus round contribution (if configured).
+    /// Returns base game RTP when no <see cref="BonusRoundConfig"/> is set.
+    /// </summary>
     public double Calculate()
     {
+        var (baseRtp, bonusTriggerProbability) = CalculateBaseRtpAndTriggerProbability();
+
+        if (_config.BonusRoundConfig is null)
+            return baseRtp;
+
+        double bonusContribution = bonusTriggerProbability
+            * _config.BonusRoundConfig.FreeSpinCount
+            * baseRtp
+            * _config.BonusRoundConfig.WinMultiplier;
+
+        return baseRtp + bonusContribution;
+    }
+
+    /// <summary>
+    /// Returns the base game RTP (paylines + scatter, no bonus).
+    /// </summary>
+    public double CalculateBaseRtp()
+    {
+        var (baseRtp, _) = CalculateBaseRtpAndTriggerProbability();
+        return baseRtp;
+    }
+
+    /// <summary>
+    /// Returns the analytical probability that any given spin triggers the bonus round.
+    /// </summary>
+    public double CalculateBonusTriggerProbability()
+    {
+        var (_, prob) = CalculateBaseRtpAndTriggerProbability();
+        return prob;
+    }
+
+    private (double baseRtp, double bonusTriggerProbability) CalculateBaseRtpAndTriggerProbability()
+    {
+        if (_cachedResult.HasValue)
+            return _cachedResult.Value;
+
         double totalExpectedPayout = 0;
+        double bonusTriggerExpected = 0;
         double totalBetPerSpin = _config.BetPerLine * _config.Paylines.Count;
 
-        // Get unique stop counts per reel
         var reelSizes = _config.ReelStrips.Select(r => r.Symbols.Count).ToList();
         long totalCombinations = reelSizes.Aggregate(1L, (acc, size) => acc * size);
 
         var evaluator = new PaylineEvaluator(_config);
 
-        // Enumerate all reel stop combinations
         long[] stops = new long[_config.Reels];
         for (long combo = 0; combo < totalCombinations; combo++)
         {
-            // Decode combo index into per-reel stop positions
             long remaining = combo;
             for (int r = _config.Reels - 1; r >= 0; r--)
             {
@@ -41,26 +84,27 @@ public class RtpCalculator
                 remaining /= reelSizes[r];
             }
 
-            // Build the window for this combination
             var window = BuildWindow(stops);
 
-            // Probability of this exact combination
             double prob = 1.0;
             for (int r = 0; r < _config.Reels; r++)
                 prob /= reelSizes[r];
 
-            // Evaluate payline wins
             var wins = evaluator.Evaluate(window);
             double comboPayout = wins.Sum(w => w.Payout);
 
-            // Scatter bonus payout (simplified: scatter pays regardless of paylines)
             int scatterCount = evaluator.CountScatters(window);
             comboPayout += _config.Paytable.GetPayout(_config.ScatterSymbolId, scatterCount) * _config.BetPerLine;
 
             totalExpectedPayout += prob * comboPayout;
+
+            if (scatterCount >= _config.BonusTriggerScatterCount)
+                bonusTriggerExpected += prob;
         }
 
-        return totalBetPerSpin > 0 ? totalExpectedPayout / totalBetPerSpin : 0;
+        double baseRtp = totalBetPerSpin > 0 ? totalExpectedPayout / totalBetPerSpin : 0;
+        _cachedResult = (baseRtp, bonusTriggerExpected);
+        return _cachedResult.Value;
     }
 
     private List<List<string>> BuildWindow(long[] stops)

@@ -19,4 +19,9 @@ public class SimulationConfig
 
     /// <summary>Min scatter count to trigger bonus.</summary>
     public int BonusTriggerScatterCount { get; set; } = 3;
+
+    /// <summary>
+    /// Free spin bonus round configuration. Null means no bonus round is simulated.
+    /// </summary>
+    public BonusRoundConfig? BonusRoundConfig { get; set; }
 }

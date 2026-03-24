@@ -18,7 +18,8 @@ Built to production standards: configurable paytables, structured logging, stati
 | **Statistics** | Hit frequency, average win, max win, volatility index, bonus trigger frequency |
 | **Win Distribution** | Bucketed breakdown of win multipliers across all spins |
 | **Wild Substitution** | Left-to-right payline eval with Wild symbol support |
-| **Scatter Bonus** | Scatter count triggers bonus flag independently of paylines |
+| **Free Spin Bonus Round** | Scatter-triggered bonus simulates N free spins at a configurable multiplier |
+| **Base/Bonus RTP Split** | Analytical and simulated RTP broken out by base game vs. bonus contribution |
 | **REST API** | ASP.NET Core — trigger simulations and query paytables over HTTP |
 | **CSV Output** | Spin-level records for downstream analysis |
 
@@ -47,38 +48,41 @@ dotnet run
 ## Sample Output
 
 ```
-[12:07:07 INF] Loading game config from configs/default-game.json
-[12:07:07 INF] Loaded game: default-game-v1 | Reels: 5 | Paylines: 20
-[12:07:08 INF] Calculating theoretical RTP...
-[12:07:08 INF] Theoretical RTP: 42.2272%
-[12:07:08 INF] Starting Monte Carlo simulation: 1,000,000 spins
+[14:09:23 INF] Loaded game: default-game-v2 | Reels: 5 | Paylines: 20 | Bonus: 13 free spins @ 2x
+[14:10:23 INF] Theoretical RTP: 96.3502 %  (Base: 74.6435 % + Bonus: 21.7067 %)
+[14:10:23 INF] Starting Monte Carlo simulation: 1,000,000 spins
 
-────────────────────────────────────────────────────
-  Game               : default-game-v1
+────────────────────────────────────────────────────────────
+  Game               : default-game-v2
   Total Spins        : 1,000,000
   Total Wagered      : 20,000,000.00
-  Total Paid         : 8,443,210.00
-────────────────────────────────────────────────────
-  Theoretical RTP    : 42.227%
-  Simulated RTP      : 42.216%
-  RTP Delta          : 0.0110%   ✓ PASS (threshold: 0.10%)
-────────────────────────────────────────────────────
-  Hit Frequency      : 39.48%
-  Average Win        : 21.41x
-  Max Win Observed   : 4960.0x
-  Volatility Index   : 1.27
-  Bonus Trigger Freq : 1 in 71
-  Duration           : 1,843ms
-────────────────────────────────────────────────────
+  Total Paid         : 19,231,153.00
+────────────────────────────────────────────────────────────
+  Theoretical RTP    : 96.350%
+    ├─ Base Game     : 74.644%
+    └─ Bonus Round   : 21.707%
+  Simulated RTP      : 96.156%
+    ├─ Base Game     : 74.489%
+    └─ Bonus Round   : 21.667%
+  RTP Delta          : 0.1940%   ✓ PASS
+────────────────────────────────────────────────────────────
+  Hit Frequency      : 79.10%
+  Average Win        : 24.311x
+  Max Win Observed   : 1,785.0x
+  Volatility Index   : 2.53
+  Bonus Trigger Freq : 1 in 89
+  Bonus Config       : 13 free spins × 2x  (max 5,000x cap)
+  Duration           : 2,175ms
+────────────────────────────────────────────────────────────
   Win Distribution:
-    0x                 605,241
-    0.01x-0.99x        280,893
-    1x-4.99x            97,742
-    5x-19.99x           15,301
-    20x-99.99x             811
-    100x-499.99x            12
+    0x                 208,960
+    0.01x-0.99x        554,601
+    1x-4.99x           206,804
+    5x-19.99x           24,704
+    20x-99.99x           4,931
+    100x-499.99x             0
     500x+                    0
-────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
 ```
 
 See [`sample-outputs/`](sample-outputs/) for real output files.
@@ -178,9 +182,14 @@ Games are defined as JSON and loaded at runtime — no recompilation needed to t
   ],
   "paytable": {
     "payouts": {
-      "A": { "3": 5, "4": 25, "5": 100 },
-      "WILD": { "3": 10, "4": 50, "5": 500 }
+      "A": { "3": 8, "4": 40, "5": 150 },
+      "WILD": { "3": 15, "4": 75, "5": 500 }
     }
+  },
+  "bonusRoundConfig": {
+    "freeSpinCount": 13,
+    "winMultiplier": 2.0,
+    "maxWinMultiplier": 5000.0
   }
 }
 ```
@@ -188,7 +197,7 @@ Games are defined as JSON and loaded at runtime — no recompilation needed to t
 Place config files in `src/SlotMathEngine.Runner/configs/` and reference with `--config`.
 
 Included configs:
-- `default-game.json` — 5 reels, 3 rows, 20 paylines, mixed volatility
+- `default-game.json` — 5 reels, 3 rows, 20 paylines, **96.35% RTP** with free spin bonus (13 spins @ 2×)
 - `high-volatility.json` — same structure, top-heavy paytable with rare high payouts
 
 ---
@@ -197,14 +206,15 @@ Included configs:
 
 ```
 SimulationRunner (CLI / API)
-    └── MonteCarloSimulator          orchestrates N spins
+    └── MonteCarloSimulator          orchestrates N spins + bonus round simulation
             ├── ReelEngine           weighted stop draw (thread-local RNG)
             ├── PaylineEvaluator     left-to-right win eval + Wild substitution
-            └── StatisticsAggregator running totals, win distribution, volatility
+            ├── SimulateFreeSpins    bonus: N free spins × multiplier, max-win cap
+            └── StatisticsAggregator base vs. bonus RTP, win distribution, volatility
 
-RtpCalculator                        analytical — independent of simulation
-    └── Enumerates all Π(N_r) stop combos
-    └── Sums P(combo) × Payout(combo) across all paylines + scatters
+RtpCalculator                        analytical — independent of simulation (memoised)
+    └── Enumerates all Π(N_r) stop combos, sums P(combo) × Payout(combo)
+    └── Computes P(trigger) × FreeSpins × BaseRtp × Multiplier for bonus RTP
 
 CsvReportWriter                      spin-level CSV + summary JSON output
 GameConfigLoader                     validates and deserializes game JSON configs

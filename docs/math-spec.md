@@ -50,7 +50,36 @@ Payout(combo) = Σ_{paylines} win(payline, combo)
 
 Total combinations = `Π N_r` (product of all reel strip lengths).
 
-For 5 reels with 25 stops each: 25^5 = 9,765,625 combinations enumerated.
+For 5 reels with 32 stops each: 32^5 = 33,554,432 combinations enumerated.
+
+---
+
+## Bonus Round RTP Contribution
+
+When a `BonusRoundConfig` is present, the theoretical RTP includes an analytical bonus contribution:
+
+```
+Bonus Contribution = P(trigger) × FreeSpinCount × BaseGameRtp × WinMultiplier
+
+Total RTP = BaseGameRtp + BonusContribution
+```
+
+Where:
+- `P(trigger)` = fraction of all reel combos where scatter_count ≥ BonusTriggerScatterCount
+- `FreeSpinCount` = number of free spins awarded per trigger
+- `WinMultiplier` = multiplier applied to all payouts during free spins
+- Re-triggers during free spins are not modelled (conservative estimate)
+
+**Example (default-game-v2):**
+```
+P(trigger)        ≈ 0.01118   (1 in ~89 spins)
+FreeSpinCount     = 13
+WinMultiplier     = 2.0×
+BaseGameRtp       ≈ 74.64%
+
+BonusContribution = 0.01118 × 13 × 0.7464 × 2.0 = 21.71%
+Total RTP         = 74.64% + 21.71% = 96.35%
+```
 
 ---
 
@@ -59,14 +88,16 @@ For 5 reels with 25 stops each: 25^5 = 9,765,625 combinations enumerated.
 The simulator draws `N` random spins and computes:
 
 ```
-Simulated RTP = TotalPaid / TotalWagered
+Simulated RTP     = (BasePaid + BonusPaid) / TotalWagered
+BaseGameRtp       = BasePaid / TotalWagered
+BonusRtp          = BonusPaid / TotalWagered
 ```
 
 **Convergence criterion:** `|Simulated RTP − Theoretical RTP| < ε`
 
-Where `ε = 0.001` (0.1%) at N = 1,000,000 spins.
+For base-only games: `ε = 0.001` (0.1%) at N = 1,000,000 spins is tight.
 
-By the Central Limit Theorem, the standard error of the simulated RTP decreases as `1/√N`. At 1M spins with typical slot variance, the 95% confidence interval is approximately ±0.05% around the true RTP, making convergence within 0.1% highly reliable.
+For bonus games: `ε = 0.005` (0.5%) is appropriate, because bonus rounds introduce high variance — each trigger can pay 10–100× the average base-game win, so far more spins are needed to smooth the distribution. At 1M spins with a 1-in-89 trigger rate there are ~11,200 bonus samples, producing standard error of approximately ±0.2% on the bonus component alone.
 
 ---
 
@@ -109,8 +140,21 @@ Scatters with `count >= BonusTriggerScatterCount` also flag `IsBonusTrigger = tr
 
 ---
 
-## Demo Paytable Note
+## Default Game Configuration (default-game-v2)
 
-The included `default-game.json` and `high-volatility.json` configs are demonstration paytables. Their theoretical RTPs (~42% and ~35% respectively) are intentionally simplified for fast analytical enumeration with small reel strips. Production slot games target 92–96% RTP with much larger reel strips.
+| Parameter | Value |
+|---|---|
+| Reels × Rows | 5 × 3 |
+| Paylines | 20 |
+| Strip length | 32 stops per reel |
+| Total combinations | 32^5 = 33,554,432 |
+| **Theoretical Base RTP** | **74.64%** |
+| **Bonus Contribution** | **21.71%** |
+| **Total Theoretical RTP** | **96.35%** |
+| Hit Frequency | ~79% |
+| Volatility Index | ~2.5 |
+| Bonus Trigger | 1 in ~89 spins |
+| Free Spins | 13 spins @ 2× multiplier |
+| Max Win Cap | 5,000× bet |
 
-To model a production-spec game, increase reel strip lengths and adjust paytable multipliers accordingly.
+Symbol frequency per reel (32 stops): E ≈ 8–9, D ≈ 7–8, C ≈ 5–6, B = 4, A = 3, Wild = 2, Scatter = 1–2.

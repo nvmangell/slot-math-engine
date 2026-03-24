@@ -11,6 +11,8 @@ public class StatisticsAggregator
     private readonly SimulationConfig _config;
 
     private double _totalWagered;
+    private double _basePaid;
+    private double _bonusPaid;
     private double _totalPaid;
     private double _maxWin;
     private long _winningSpins;
@@ -38,15 +40,23 @@ public class StatisticsAggregator
         _config = config;
     }
 
-    public void Record(double bet, double win, bool isBonus)
+    /// <param name="bet">Bet amount for this base spin.</param>
+    /// <param name="baseWin">Win from the base game spin (paylines + scatter).</param>
+    /// <param name="bonusWin">Win from the free spin bonus round triggered by this spin (0 if no trigger).</param>
+    /// <param name="isBonusTrigger">Whether this spin triggered the bonus round.</param>
+    public void Record(double bet, double baseWin, double bonusWin, bool isBonusTrigger)
     {
+        double win = baseWin + bonusWin;
+
         _totalSpins++;
         _totalWagered += bet;
+        _basePaid += baseWin;
+        _bonusPaid += bonusWin;
         _totalPaid += win;
 
         if (win > _maxWin) _maxWin = win;
         if (win > 0) _winningSpins++;
-        if (isBonus) _bonusTriggers++;
+        if (isBonusTrigger) _bonusTriggers++;
 
         _winSum += win;
         _winSumOfSquares += win * win;
@@ -62,9 +72,11 @@ public class StatisticsAggregator
         else _winDistribution["500x+"]++;
     }
 
-    public SimulationReport BuildReport(string gameId, long spinCount, double theoreticalRtp, double tolerancePct)
+    public SimulationReport BuildReport(string gameId, long spinCount, double theoreticalRtp, double theoreticalBaseRtp, double tolerancePct)
     {
         double simulatedRtp = _totalWagered > 0 ? _totalPaid / _totalWagered : 0;
+        double baseGameRtp = _totalWagered > 0 ? _basePaid / _totalWagered : 0;
+        double bonusRtp = _totalWagered > 0 ? _bonusPaid / _totalWagered : 0;
         double delta = Math.Abs(simulatedRtp - theoreticalRtp);
 
         // Volatility index: std deviation of win amounts normalised by bet per spin
@@ -80,7 +92,11 @@ public class StatisticsAggregator
             TotalSpins = spinCount,
             TotalWagered = Math.Round(_totalWagered, 2),
             TotalPaid = Math.Round(_totalPaid, 2),
+            BaseGameRtp = Math.Round(baseGameRtp, 5),
+            BonusRtp = Math.Round(bonusRtp, 5),
             SimulatedRtp = Math.Round(simulatedRtp, 5),
+            TheoreticalBaseRtp = Math.Round(theoreticalBaseRtp, 5),
+            TheoreticalBonusRtp = Math.Round(theoreticalRtp - theoreticalBaseRtp, 5),
             TheoreticalRtp = Math.Round(theoreticalRtp, 5),
             RtpDelta = Math.Round(delta, 5),
             HitFrequency = _totalSpins > 0 ? Math.Round((double)_winningSpins / _totalSpins, 4) : 0,
