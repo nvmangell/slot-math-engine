@@ -1,0 +1,63 @@
+{
+  "gameId": "high-volatility-v1",
+  "reels": 5,
+  "rows": 3,
+  "betPerLine": 1.0,
+  "wildSymbolId": "WILD",
+  "scatterSymbolId": "SCATTER",
+  "bonusTriggerScatterCount": 3,
+  "symbols": [
+    { "id": "WILD",    "name": "Wild",      "isWild": true,  "isScatter": false },
+    { "id": "SCATTER", "name": "Scatter",   "isWild": false, "isScatter": true  },
+    { "id": "A",       "name": "Diamond",   "isWild": false, "isScatter": false },
+    { "id": "B",       "name": "Gold Bar",  "isWild": false, "isScatter": false },
+    { "id": "C",       "name": "Seven",     "isWild": false, "isScatter": false },
+    { "id": "D",       "name": "Bell",      "isWild": false, "isScatter": false },
+    { "id": "E",       "name": "Cherry",    "isWild": false, "isScatter": false }
+  ],
+  "reelStrips": [
+    {
+      "reelIndex": 0,
+      "symbols": ["E","E","E","E","E","E","E","D","D","D","D","C","C","B","A","WILD","SCATTER","E","E","E","E","D","D","C","B"]
+    },
+    {
+      "reelIndex": 1,
+      "symbols": ["E","E","E","E","E","D","D","D","D","C","C","C","B","B","A","WILD","SCATTER","E","E","E","D","D","C","B","A"]
+    },
+    {
+      "reelIndex": 2,
+      "symbols": ["E","E","E","E","E","E","D","D","D","C","C","B","B","A","A","WILD","SCATTER","E","E","E","E","D","D","C","B"]
+    },
+    {
+      "reelIndex": 3,
+      "symbols": ["E","E","E","E","D","D","D","D","D","C","C","C","B","B","A","WILD","SCATTER","E","E","E","D","D","C","B","A"]
+    },
+    {
+      "reelIndex": 4,
+      "symbols": ["E","E","E","E","E","E","D","D","D","D","C","C","B","A","A","WILD","SCATTER","E","E","E","E","E","D","D","C"]
+    }
+  ],
+  "paylines": [
+    { "id": 1,  "rowPositions": [1, 1, 1, 1, 1] },
+    { "id": 2,  "rowPositions": [0, 0, 0, 0, 0] },
+    { "id": 3,  "rowPositions": [2, 2, 2, 2, 2] },
+    { "id": 4,  "rowPositions": [0, 1, 2, 1, 0] },
+    { "id": 5,  "rowPositions": [2, 1, 0, 1, 2] },
+    { "id": 6,  "rowPositions": [0, 0, 1, 2, 2] },
+    { "id": 7,  "rowPositions": [2, 2, 1, 0, 0] },
+    { "id": 8,  "rowPositions": [1, 0, 0, 0, 1] },
+    { "id": 9,  "rowPositions": [1, 2, 2, 2, 1] },
+    { "id": 10, "rowPositions": [0, 1, 0, 1, 0] }
+  ],
+  "paytable": {
+    "payouts": {
+      "WILD":    { "3": 50.0,  "4": 250.0,  "5": 5000.0 },
+      "A":       { "3": 25.0,  "4": 100.0,  "5": 1000.0 },
+      "B":       { "3": 15.0,  "4": 75.0,   "5": 500.0  },
+      "C":       { "3": 8.0,   "4": 40.0,   "5": 200.0  },
+      "D":       { "3": 3.0,   "4": 15.0,   "5": 75.0   },
+      "E":       { "3": 0.5,   "4": 2.0,    "5": 10.0   },
+      "SCATTER": { "3": 5.0,   "4": 20.0,   "5": 100.0  }
+    }
+  }
+}

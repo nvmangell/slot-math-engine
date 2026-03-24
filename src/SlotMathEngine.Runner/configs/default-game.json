@@ -1,0 +1,73 @@
+{
+  "gameId": "default-game-v1",
+  "reels": 5,
+  "rows": 3,
+  "betPerLine": 1.0,
+  "wildSymbolId": "WILD",
+  "scatterSymbolId": "SCATTER",
+  "bonusTriggerScatterCount": 3,
+  "symbols": [
+    { "id": "WILD",    "name": "Wild",    "isWild": true,    "isScatter": false },
+    { "id": "SCATTER", "name": "Scatter", "isWild": false,   "isScatter": true  },
+    { "id": "A",       "name": "Ace",     "isWild": false,   "isScatter": false },
+    { "id": "B",       "name": "King",    "isWild": false,   "isScatter": false },
+    { "id": "C",       "name": "Queen",   "isWild": false,   "isScatter": false },
+    { "id": "D",       "name": "Jack",    "isWild": false,   "isScatter": false },
+    { "id": "E",       "name": "Ten",     "isWild": false,   "isScatter": false }
+  ],
+  "reelStrips": [
+    {
+      "reelIndex": 0,
+      "symbols": ["A","A","A","B","B","C","C","C","D","D","D","D","E","E","E","E","WILD","A","B","C","D","E","SCATTER","A","B"]
+    },
+    {
+      "reelIndex": 1,
+      "symbols": ["A","A","B","B","B","C","C","D","D","D","E","E","E","WILD","A","B","C","C","D","E","SCATTER","A","B","C","D"]
+    },
+    {
+      "reelIndex": 2,
+      "symbols": ["A","B","B","C","C","C","D","D","E","E","E","WILD","A","A","B","C","D","D","E","SCATTER","A","B","C","D","E"]
+    },
+    {
+      "reelIndex": 3,
+      "symbols": ["A","A","B","C","C","D","D","D","E","E","WILD","A","B","B","C","D","E","E","SCATTER","A","B","C","D","E","A"]
+    },
+    {
+      "reelIndex": 4,
+      "symbols": ["A","B","B","B","C","C","D","D","D","D","E","E","WILD","A","A","B","C","D","E","E","SCATTER","A","B","C","D"]
+    }
+  ],
+  "paylines": [
+    { "id": 1,  "rowPositions": [1, 1, 1, 1, 1] },
+    { "id": 2,  "rowPositions": [0, 0, 0, 0, 0] },
+    { "id": 3,  "rowPositions": [2, 2, 2, 2, 2] },
+    { "id": 4,  "rowPositions": [0, 1, 2, 1, 0] },
+    { "id": 5,  "rowPositions": [2, 1, 0, 1, 2] },
+    { "id": 6,  "rowPositions": [0, 0, 1, 2, 2] },
+    { "id": 7,  "rowPositions": [2, 2, 1, 0, 0] },
+    { "id": 8,  "rowPositions": [1, 0, 0, 0, 1] },
+    { "id": 9,  "rowPositions": [1, 2, 2, 2, 1] },
+    { "id": 10, "rowPositions": [0, 1, 0, 1, 0] },
+    { "id": 11, "rowPositions": [2, 1, 2, 1, 2] },
+    { "id": 12, "rowPositions": [1, 0, 1, 0, 1] },
+    { "id": 13, "rowPositions": [1, 2, 1, 2, 1] },
+    { "id": 14, "rowPositions": [0, 0, 2, 0, 0] },
+    { "id": 15, "rowPositions": [2, 2, 0, 2, 2] },
+    { "id": 16, "rowPositions": [0, 1, 1, 1, 0] },
+    { "id": 17, "rowPositions": [2, 1, 1, 1, 2] },
+    { "id": 18, "rowPositions": [0, 2, 0, 2, 0] },
+    { "id": 19, "rowPositions": [2, 0, 2, 0, 2] },
+    { "id": 20, "rowPositions": [1, 1, 0, 1, 1] }
+  ],
+  "paytable": {
+    "payouts": {
+      "WILD":    { "3": 10.0, "4": 50.0,  "5": 500.0 },
+      "A":       { "3": 5.0,  "4": 25.0,  "5": 100.0 },
+      "B":       { "3": 4.0,  "4": 20.0,  "5": 80.0  },
+      "C":       { "3": 3.0,  "4": 15.0,  "5": 60.0  },
+      "D":       { "3": 2.0,  "4": 10.0,  "5": 40.0  },
+      "E":       { "3": 1.0,  "4": 5.0,   "5": 20.0  },
+      "SCATTER": { "3": 2.0,  "4": 10.0,  "5": 50.0  }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40A1E20D-9755-425E-93A2-1D92AB597B74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMathEngine.Core", "src\SlotMathEngine.Core\SlotMathEngine.Core.csproj", "{AA98D63D-41B0-4489-BF97-625215741449}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMathEngine.Api", "src\SlotMathEngine.Api\SlotMathEngine.Api.csproj", "{D6B66C11-5D79-4D17-8496-6C38FC1A594E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMathEngine.Runner", "src\SlotMathEngine.Runner\SlotMathEngine.Runner.csproj", "{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A7F3DDDC-DE3E-443E-B58A-E0DD8E332F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMathEngine.UnitTests", "tests\SlotMathEngine.UnitTests\SlotMathEngine.UnitTests.csproj", "{63BD093B-2DE1-4C60-AE21-255A27D9EAE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMathEngine.StatisticalTests", "tests\SlotMathEngine.StatisticalTests\SlotMathEngine.StatisticalTests.csproj", "{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA98D63D-41B0-4489-BF97-625215741449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA98D63D-41B0-4489-BF97-625215741449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA98D63D-41B0-4489-BF97-625215741449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA98D63D-41B0-4489-BF97-625215741449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6B66C11-5D79-4D17-8496-6C38FC1A594E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B66C11-5D79-4D17-8496-6C38FC1A594E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B66C11-5D79-4D17-8496-6C38FC1A594E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B66C11-5D79-4D17-8496-6C38FC1A594E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63BD093B-2DE1-4C60-AE21-255A27D9EAE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63BD093B-2DE1-4C60-AE21-255A27D9EAE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63BD093B-2DE1-4C60-AE21-255A27D9EAE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63BD093B-2DE1-4C60-AE21-255A27D9EAE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA98D63D-41B0-4489-BF97-625215741449} = {40A1E20D-9755-425E-93A2-1D92AB597B74}
+		{D6B66C11-5D79-4D17-8496-6C38FC1A594E} = {40A1E20D-9755-425E-93A2-1D92AB597B74}
+		{454CFE88-1ED6-46A5-8BDF-F9E7B6AA6695} = {40A1E20D-9755-425E-93A2-1D92AB597B74}
+		{63BD093B-2DE1-4C60-AE21-255A27D9EAE4} = {A7F3DDDC-DE3E-443E-B58A-E0DD8E332F87}
+		{1BC35BD6-A893-45A0-A7F9-407FC2EA4A8C} = {A7F3DDDC-DE3E-443E-B58A-E0DD8E332F87}
+	EndGlobalSection
+EndGlobal
